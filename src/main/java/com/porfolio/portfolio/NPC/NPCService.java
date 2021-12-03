@@ -2,10 +2,11 @@ package com.porfolio.portfolio.NPC;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+import com.porfolio.portfolio.Maps.MapsService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,15 +14,18 @@ import org.springframework.stereotype.Component;
 public class NPCService {
   NPCRepository npcRepository;
   List<NPCEntity> allNpcs;
-
+  
+  @Autowired
+  MapsService mapService;
+  
   NPCService(NPCRepository npcRepository) {
     this.npcRepository = npcRepository;
     this.allNpcs = npcRepository.findAll();
   }
 
   SecureRandom numberGenerator = new SecureRandom();
-  
-  @Scheduled(fixedRate = 250)
+
+  @Scheduled(fixedRate = 500)
   private void moveNPC() {
     int moveDirection;
 
@@ -36,32 +40,20 @@ public class NPCService {
 
       switch (moveDirection) {
         case 0: // up
-          if (npcYCoord - 20 > 20) {
+          if (mapService.isValidMovementTile(npcXCoord, npcYCoord - 20))
             npcToMove.setYCoordinate(npcYCoord - 20);
-          } else {
-            npcToMove.setYCoordinate(20);
-          }
           break;
         case 1: // down
-          if (npcYCoord + 20 < 580) {
+          if (mapService.isValidMovementTile(npcXCoord, npcYCoord + 20))
             npcToMove.setYCoordinate(npcYCoord + 20);
-          } else {
-            npcToMove.setYCoordinate(580);
-          }
           break;
         case 2: // left
-          if (npcXCoord - 20 > 20) {
+          if (mapService.isValidMovementTile(npcXCoord - 20, npcYCoord))
             npcToMove.setXCoordinate(npcXCoord - 20);
-          } else {
-            npcToMove.setXCoordinate(20);
-          }
           break;
         case 3: // right
-          if (npcXCoord + 20 < 780) {
+          if (mapService.isValidMovementTile(npcXCoord + 20, npcYCoord))
             npcToMove.setXCoordinate(npcXCoord + 20);
-          } else {
-            npcToMove.setXCoordinate(780);
-          }
           break;
         case 4: // Doesn't move if 4/5 are rolled
         case 5:
