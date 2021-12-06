@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE NPCEntity
+CREATE TABLE NPC
   (
      id UUID NOT NULL primary key DEFAULT uuid_generate_v1(),
      name VARCHAR(255),
@@ -8,7 +8,7 @@ CREATE TABLE NPCEntity
      y_coordinate INT
   );
 
-  INSERT INTO NPCEntity (name, x_coordinate, y_coordinate) VALUES 
+  INSERT INTO NPC (name, x_coordinate, y_coordinate) VALUES 
   ('test_NPC_1', 80, 80),
   ('test_NPC_2', 180, 80),
   ('test_NPC_3', 80, 180),

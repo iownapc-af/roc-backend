@@ -1,5 +1,7 @@
 package com.porfolio.portfolio.Player;
 
-public class PlayerRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PlayerRepository extends JpaRepository<PlayerEntity, Integer> {
   
 }

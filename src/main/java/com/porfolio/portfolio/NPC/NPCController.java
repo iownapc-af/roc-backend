@@ -24,7 +24,7 @@ public class NPCController {
 
   @GetMapping(path = "/api/npcs", produces = MediaType.APPLICATION_JSON_VALUE)
   public NPCResponse getAllNPC() {
-    return new NPCResponse(repository.findAll());
+    return new NPCResponse(repository.findAllByOrderByName());
   }
 
   @GetMapping(path = "/api/npc-moving", produces = MediaType.APPLICATION_JSON_VALUE)
