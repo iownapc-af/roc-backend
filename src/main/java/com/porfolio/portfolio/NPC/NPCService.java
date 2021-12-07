@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.porfolio.portfolio.Maps.MapsService;
+import com.porfolio.portfolio.Player.PlayerEntity;
+import com.porfolio.portfolio.Player.PlayerRepository;
+import com.porfolio.portfolio.Player.PlayerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +20,9 @@ public class NPCService {
 
   @Autowired
   MapsService mapService;
+
+  @Autowired
+  PlayerRepository playerRepository;
 
   NPCService(NPCRepository npcRepository) {
     this.npcRepository = npcRepository;
@@ -44,19 +50,19 @@ public class NPCService {
 
       switch (moveDirection) {
         case 0: // up
-          if (mapService.isValidMovementTile(npcXCoord, npcYCoord - 20, this.allNpcs))
+          if (mapService.isValidMovementTile(npcXCoord, npcYCoord - 20, this.allNpcs, playerRepository.findById(0).get()))
             npcToMove.setYCoordinate(npcYCoord - 20);
           break;
         case 1: // down
-          if (mapService.isValidMovementTile(npcXCoord, npcYCoord + 20, this.allNpcs))
+          if (mapService.isValidMovementTile(npcXCoord, npcYCoord + 20, this.allNpcs, playerRepository.findById(0).get()))
             npcToMove.setYCoordinate(npcYCoord + 20);
           break;
         case 2: // left
-          if (mapService.isValidMovementTile(npcXCoord - 20, npcYCoord, this.allNpcs))
+          if (mapService.isValidMovementTile(npcXCoord - 20, npcYCoord, this.allNpcs, playerRepository.findById(0).get()))
             npcToMove.setXCoordinate(npcXCoord - 20);
           break;
         case 3: // right
-          if (mapService.isValidMovementTile(npcXCoord + 20, npcYCoord, this.allNpcs))
+          if (mapService.isValidMovementTile(npcXCoord + 20, npcYCoord, this.allNpcs, playerRepository.findById(0).get()))
             npcToMove.setXCoordinate(npcXCoord + 20);
           break;
         case 4: // Doesn't move if 4/5 are rolled
@@ -69,7 +75,7 @@ public class NPCService {
     this.allNpcs = allNpcsToMove;
   }
 
-  List<NPCEntity> getNPCPositions() {
+  public List<NPCEntity> getNPCPositions() {
     return this.allNpcs;
   }
 }

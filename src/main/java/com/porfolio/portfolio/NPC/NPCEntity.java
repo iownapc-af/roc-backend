@@ -26,6 +26,8 @@ public class NPCEntity {
 
   private String name;
 
+  private String type;
+
   @Column(name = "x_coordinate")
   private Integer xCoordinate;
   

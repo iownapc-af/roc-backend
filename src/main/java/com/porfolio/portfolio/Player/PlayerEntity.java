@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonDeserialize(builder = PlayerEntity.PlayerEntityBuilder.class)
 public class PlayerEntity {
   @Id
   private Integer id;
@@ -35,4 +39,6 @@ public class PlayerEntity {
   // inventory
   // equipment
   // quests
+  @JsonPOJOBuilder(withPrefix = "")
+  public static final class PlayerEntityBuilder {}
 }

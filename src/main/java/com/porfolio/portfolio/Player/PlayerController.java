@@ -18,7 +18,7 @@ public class PlayerController {
   @PutMapping(path = "/api/player/{key}",  produces = MediaType.APPLICATION_JSON_VALUE)
   PlayerEntity updatePlayer(@PathVariable String key) {
     PlayerEntity result = repository.save(service.movePlayer(key));
-    
-    return repository.findById(0).get();
+
+    return result;
   }
 }
