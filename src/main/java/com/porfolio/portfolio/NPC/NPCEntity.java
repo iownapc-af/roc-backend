@@ -22,7 +22,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "NPC")
+@Table(name = "npc")
 @Entity
 @Data
 @AllArgsConstructor
@@ -45,7 +45,6 @@ public class NPCEntity {
   
   @ManyToOne
   @Fetch(value=FetchMode.SELECT)
-  @JsonIgnore
   @JoinColumn(name="map_id", nullable = false)
   public MapsEntity map;
 }

@@ -7,7 +7,7 @@ CREATE TABLE maps_entity
      map_contents VARCHAR(3800)
   );
 
-CREATE TABLE NPC
+CREATE TABLE npc
   (
      id UUID NOT NULL primary key DEFAULT uuid_generate_v1(),
      name VARCHAR(255),
@@ -20,7 +20,7 @@ CREATE TABLE NPC
         REFERENCES maps_entity(map_id)
   );
 
-CREATE TABLE Player
+CREATE TABLE player
   (
      id INT,
      player_name VARCHAR(255),

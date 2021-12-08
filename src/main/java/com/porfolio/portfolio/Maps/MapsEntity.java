@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.porfolio.portfolio.NPC.NPCEntity;
 import com.porfolio.portfolio.Player.PlayerEntity;
 
@@ -31,9 +32,11 @@ public class MapsEntity {
   @Column(name = "map_contents")
   private String mapContents;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "map")
   private Set<NPCEntity> npcs;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "map")
   private Set<PlayerEntity> player;
 }

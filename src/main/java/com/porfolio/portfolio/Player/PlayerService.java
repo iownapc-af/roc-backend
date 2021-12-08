@@ -3,29 +3,34 @@ package com.porfolio.portfolio.Player;
 import java.util.HashMap;
 import java.util.List;
 
+import com.porfolio.portfolio.Maps.MapsEntity;
+import com.porfolio.portfolio.Maps.MapsRepository;
 import com.porfolio.portfolio.Maps.MapsService;
+import com.porfolio.portfolio.Maps.Door.DoorService;
 import com.porfolio.portfolio.NPC.NPCEntity;
 import com.porfolio.portfolio.NPC.NPCService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PlayerService {
   PlayerRepository playerRepository;
-
-  @Autowired
+  MapsRepository mapsRepository;
   MapsService mapsService;
-
-  @Autowired
   NPCService npcService;
+  DoorService doorService;
 
-  PlayerService(PlayerRepository playerRepository) {
+  PlayerService(PlayerRepository playerRepository, MapsRepository mapsRepository, MapsService mapsService,
+      NPCService npcService,
+      DoorService doorService) {
     this.playerRepository = playerRepository;
+    this.mapsRepository = mapsRepository;
+    this.mapsService = mapsService;
+    this.npcService = npcService;
+    this.doorService = doorService;
   }
 
-  public Integer[] playerMovement(String playerDirection) {
-    PlayerEntity player = playerRepository.getById(0);
+  public Integer[] playerMovement(String playerDirection, PlayerEntity player) {
     Integer playerXCoord = player.getXCoordinate();
     Integer playerYCoord = player.getYCoordinate();
 
@@ -43,9 +48,23 @@ public class PlayerService {
     return direction.get(playerDirection);
   }
 
+  private void setPlayerMapId(PlayerEntity player) {
+    Integer x = playerMovement(player.getPlayerDirection(), player)[0];
+    Integer y = playerMovement(player.getPlayerDirection(), player)[1];
+
+    Integer newX = doorService.getDoorLocation(x, y, player.getMap().getMapId()).getNewPlayerXCoordinate();
+    Integer newY = doorService.getDoorLocation(x, y, player.getMap().getMapId()).getNewPlayerYCoordinate();
+    Integer newMapId = doorService.getDoorLocation(x, y, player.getMap().getMapId()).getNewPlayerMapId();
+    MapsEntity newMap = mapsRepository.findById(newMapId).get();
+
+    player.setXCoordinate(newX);
+    player.setYCoordinate(newY);
+    player.setMap(newMap);
+  }
+
   public PlayerEntity movePlayer(String key) {
     PlayerEntity player = playerRepository.findById(0).get();
-    
+
     List<NPCEntity> allNpcs = npcService.getNPCPositions();
 
     Integer mapId = player.getMap().getMapId();
@@ -53,42 +72,45 @@ public class PlayerService {
     switch (key) {
       case "w":
       case "ArrowUp":
-        if (mapsService.isValidMovementTile(playerMovement("north")[0], playerMovement("north")[1], allNpcs, mapId))
-          player.setYCoordinate(playerMovement("north")[1]);
+        if (mapsService.isValidMovementTile(playerMovement("north", player)[0], playerMovement("north", player)[1],
+            allNpcs, mapId))
+          player.setYCoordinate(playerMovement("north", player)[1]);
 
         player.setPlayerDirection("north");
         break;
       case "s":
       case "ArrowDown":
-        if (mapsService.isValidMovementTile(playerMovement("south")[0], playerMovement("south")[1], allNpcs, mapId))
-          player.setYCoordinate(playerMovement("south")[1]);
+        if (mapsService.isValidMovementTile(playerMovement("south", player)[0], playerMovement("south", player)[1],
+            allNpcs, mapId))
+          player.setYCoordinate(playerMovement("south", player)[1]);
         player.setPlayerDirection("south");
         break;
       case "a":
       case "ArrowLeft":
-        if (mapsService.isValidMovementTile(playerMovement("west")[0], playerMovement("west")[1], allNpcs, mapId))
-          player.setXCoordinate(playerMovement("west")[0]);
+        if (mapsService.isValidMovementTile(playerMovement("west", player)[0], playerMovement("west", player)[1],
+            allNpcs, mapId))
+          player.setXCoordinate(playerMovement("west", player)[0]);
         player.setPlayerDirection("west");
         break;
       case "d":
       case "ArrowRight":
-        if (mapsService.isValidMovementTile(playerMovement("east")[0], playerMovement("east")[1], allNpcs, mapId))
-          player.setXCoordinate(playerMovement("east")[0]);
+        if (mapsService.isValidMovementTile(playerMovement("east", player)[0], playerMovement("east", player)[1],
+            allNpcs, mapId))
+          player.setXCoordinate(playerMovement("east", player)[0]);
         player.setPlayerDirection("east");
         break;
       case "spacebar":
-        if (mapsService.isTileDoor(playerMovement(player.getPlayerDirection())))
-          // interact with ur mum
-          // get id of door
-          // get id of map that door goes to
-          // ????
-          // profit
-          break;
+        if (mapsService.isTileDoor(playerMovement(player.getPlayerDirection(), player), player.getMap().getMapId()))
+          setPlayerMapId(player);
+        // interact with ur mum
+        // get id of door
+        // get id of map that door goes to
+        // ????
+        // profit
+        break;
       default:
         break;
     }
-
-
 
     return player;
   }

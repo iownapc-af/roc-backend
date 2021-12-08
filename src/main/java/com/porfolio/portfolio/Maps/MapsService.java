@@ -31,13 +31,6 @@ public class MapsService {
     if (map.get(y / 20).charAt(x / 20) == ' ')
       return true;
 
-    // if (map.indexOf(y / 20).[x / 20] == ' ') {
-
-    // }
-
-    // if (map[y / 20].charAt(x / 20) == ' ')
-    // return true;
-
     return false;
   }
 
@@ -79,7 +72,6 @@ public class MapsService {
     if (isTileEmpty(x, y, mapId)) {
       if (isTileNotOccupied(x, y, allNpcs)) {
         return true;
-        // else
         // do encounter
       }
     }
@@ -87,10 +79,10 @@ public class MapsService {
     return false;
   }
 
-  public boolean isTileDoor(Integer[] movement) {
-    String[] map = { "" }; // mapString.split("\\|");
+  public boolean isTileDoor(Integer[] coord, Integer mapId) {
+    ArrayList<String> map = getMapContents(mapId);
 
-    if (map[movement[1] / 20].charAt(movement[0] / 20) == ':')
+    if (map.get(coord[1] / 20).charAt(coord[0] / 20) == ':')
       return true;
 
     return false;

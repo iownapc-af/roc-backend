@@ -1,6 +1,5 @@
 package com.porfolio.portfolio.Player;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.porfolio.portfolio.Maps.MapsEntity;
@@ -21,7 +19,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "Player")
+@Table(name = "player")
 @Entity
 @Data
 @AllArgsConstructor
@@ -46,7 +44,6 @@ public class PlayerEntity {
 
   @ManyToOne
   @Fetch(value=FetchMode.SELECT)
-  @JsonIgnore
   @JoinColumn(name="map_id", nullable = false)
   public MapsEntity map;
 
