@@ -46,23 +46,25 @@ public class NPCService {
       Integer npcXCoord = npcToMove.getXCoordinate();
       Integer npcYCoord = npcToMove.getYCoordinate();
 
+      Integer mapId = npcToMove.getMap().getMapId();
+
       allNpcsToMove.add(npcToMove);
 
       switch (moveDirection) {
         case 0: // up
-          if (mapService.isValidMovementTile(npcXCoord, npcYCoord - 20, this.allNpcs, playerRepository.findById(0).get()))
+          if (mapService.isValidMovementTile(npcXCoord, npcYCoord - 20, this.allNpcs, playerRepository.findById(0).get(), mapId))
             npcToMove.setYCoordinate(npcYCoord - 20);
           break;
         case 1: // down
-          if (mapService.isValidMovementTile(npcXCoord, npcYCoord + 20, this.allNpcs, playerRepository.findById(0).get()))
+          if (mapService.isValidMovementTile(npcXCoord, npcYCoord + 20, this.allNpcs, playerRepository.findById(0).get(), mapId))
             npcToMove.setYCoordinate(npcYCoord + 20);
           break;
         case 2: // left
-          if (mapService.isValidMovementTile(npcXCoord - 20, npcYCoord, this.allNpcs, playerRepository.findById(0).get()))
+          if (mapService.isValidMovementTile(npcXCoord - 20, npcYCoord, this.allNpcs, playerRepository.findById(0).get(), mapId))
             npcToMove.setXCoordinate(npcXCoord - 20);
           break;
         case 3: // right
-          if (mapService.isValidMovementTile(npcXCoord + 20, npcYCoord, this.allNpcs, playerRepository.findById(0).get()))
+          if (mapService.isValidMovementTile(npcXCoord + 20, npcYCoord, this.allNpcs, playerRepository.findById(0).get(), mapId))
             npcToMove.setXCoordinate(npcXCoord + 20);
           break;
         case 4: // Doesn't move if 4/5 are rolled

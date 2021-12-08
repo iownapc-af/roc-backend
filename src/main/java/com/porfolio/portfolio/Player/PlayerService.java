@@ -48,36 +48,41 @@ public class PlayerService {
     
     List<NPCEntity> allNpcs = npcService.getNPCPositions();
 
+    Integer mapId = player.getMap().getMapId();
+
     switch (key) {
       case "w":
       case "ArrowUp":
-        if (mapsService.isValidMovementTile(playerMovement("north")[0], playerMovement("north")[1], allNpcs))
+        if (mapsService.isValidMovementTile(playerMovement("north")[0], playerMovement("north")[1], allNpcs, mapId))
           player.setYCoordinate(playerMovement("north")[1]);
 
         player.setPlayerDirection("north");
         break;
       case "s":
-      case "arrowdown":
-        if (mapsService.isValidMovementTile(playerMovement("south")[0], playerMovement("south")[1], allNpcs))
+      case "ArrowDown":
+        if (mapsService.isValidMovementTile(playerMovement("south")[0], playerMovement("south")[1], allNpcs, mapId))
           player.setYCoordinate(playerMovement("south")[1]);
         player.setPlayerDirection("south");
         break;
       case "a":
-      case "arrowleft":
-        if (mapsService.isValidMovementTile(playerMovement("west")[0], playerMovement("west")[1], allNpcs))
+      case "ArrowLeft":
+        if (mapsService.isValidMovementTile(playerMovement("west")[0], playerMovement("west")[1], allNpcs, mapId))
           player.setXCoordinate(playerMovement("west")[0]);
         player.setPlayerDirection("west");
         break;
       case "d":
-      case "arrowright":
-        if (mapsService.isValidMovementTile(playerMovement("east")[0], playerMovement("east")[1], allNpcs))
+      case "ArrowRight":
+        if (mapsService.isValidMovementTile(playerMovement("east")[0], playerMovement("east")[1], allNpcs, mapId))
           player.setXCoordinate(playerMovement("east")[0]);
         player.setPlayerDirection("east");
         break;
       case "spacebar":
         if (mapsService.isTileDoor(playerMovement(player.getPlayerDirection())))
-          System.out.println("DOROROROROROROROROROR");
           // interact with ur mum
+          // get id of door
+          // get id of map that door goes to
+          // ????
+          // profit
           break;
       default:
         break;

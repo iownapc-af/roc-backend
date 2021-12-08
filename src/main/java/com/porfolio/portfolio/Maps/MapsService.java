@@ -13,24 +13,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapsService {
   MapsRepository mapsRepository;
-  String mapString;
 
   MapsService(MapsRepository mapsRepository) {
     this.mapsRepository = mapsRepository;
-    this.mapString = mapsRepository.getById(0).getMapContents();
   }
 
-  public List<String> getMapContents(Integer id) {
-    ArrayList<String> mapRows = new ArrayList<>(Arrays.asList(mapString.split("\\|")));
+  public ArrayList<String> getMapContents(Integer id) {
+    ArrayList<String> mapRows = new ArrayList<>(
+        Arrays.asList(mapsRepository.getById(id).getMapContents().split("\\|")));
 
     return mapRows;
   }
 
-  private boolean isTileEmpty(Integer x, Integer y) {
-    String[] map = mapString.split("\\|");
+  private boolean isTileEmpty(Integer x, Integer y, Integer mapId) {
+    ArrayList<String> map = getMapContents(mapId);
 
-    if (map[y / 20].charAt(x / 20) == ' ')
+    if (map.get(y / 20).charAt(x / 20) == ' ')
       return true;
+
+    // if (map.indexOf(y / 20).[x / 20] == ' ') {
+
+    // }
+
+    // if (map[y / 20].charAt(x / 20) == ' ')
+    // return true;
 
     return false;
   }
@@ -49,8 +55,9 @@ public class MapsService {
     return false;
   }
 
-  public boolean isValidMovementTile(Integer x, Integer y, List<NPCEntity> allNpcs, PlayerEntity player) {
-    if (isTileNotOccupied(x, y, allNpcs, player) && isTileEmpty(x, y)) {
+  public boolean isValidMovementTile(Integer x, Integer y, List<NPCEntity> allNpcs, PlayerEntity player,
+      Integer mapId) {
+    if (isTileNotOccupied(x, y, allNpcs, player) && isTileEmpty(x, y, mapId)) {
       return true;
     }
 
@@ -68,16 +75,20 @@ public class MapsService {
     return false;
   }
 
-  public boolean isValidMovementTile(Integer x, Integer y, List<NPCEntity> allNpcs) {
-    if (isTileNotOccupied(x, y, allNpcs) && isTileEmpty(x, y)) {
-      return true;
+  public boolean isValidMovementTile(Integer x, Integer y, List<NPCEntity> allNpcs, Integer mapId) {
+    if (isTileEmpty(x, y, mapId)) {
+      if (isTileNotOccupied(x, y, allNpcs)) {
+        return true;
+        // else
+        // do encounter
+      }
     }
 
     return false;
   }
 
   public boolean isTileDoor(Integer[] movement) {
-    String[] map = mapString.split("\\|");
+    String[] map = { "" }; // mapString.split("\\|");
 
     if (map[movement[1] / 20].charAt(movement[0] / 20) == ':')
       return true;
