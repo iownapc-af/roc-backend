@@ -52,8 +52,8 @@ public class PlayerService {
     Integer x = playerMovement(player.getPlayerDirection(), player)[0];
     Integer y = playerMovement(player.getPlayerDirection(), player)[1];
 
-    Integer newX = doorService.getDoorLocation(x, y, player.getMap().getMapId()).getNewPlayerXCoordinate();
-    Integer newY = doorService.getDoorLocation(x, y, player.getMap().getMapId()).getNewPlayerYCoordinate();
+    Integer newX = doorService.getDoorLocation(x, y, player.getMap().getMapId()).getNewPlayerXCoordinate() * 20;
+    Integer newY = doorService.getDoorLocation(x, y, player.getMap().getMapId()).getNewPlayerYCoordinate() * 20;
     Integer newMapId = doorService.getDoorLocation(x, y, player.getMap().getMapId()).getNewPlayerMapId();
     MapsEntity newMap = mapsRepository.findById(newMapId).get();
 

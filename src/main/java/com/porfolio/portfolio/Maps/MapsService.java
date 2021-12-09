@@ -57,9 +57,12 @@ public class MapsService {
     return false;
   }
 
-  private boolean isTileNotOccupied(Integer x, Integer y, List<NPCEntity> allNpcs) {
+  private boolean isTileNotOccupied(Integer x, Integer y, List<NPCEntity> allNpcs, Integer mapId) {
     List<NPCEntity> filteredNpcs = allNpcs.stream().filter((npc) -> {
-      return npc.getXCoordinate().equals(x) && npc.getYCoordinate().equals(y);
+      if (npc.getMap().getMapId() == mapId) {
+        return npc.getXCoordinate().equals(x) && npc.getYCoordinate().equals(y);
+      }
+      return false;
     }).collect(Collectors.toList());
 
     if (filteredNpcs.size() == 0)
@@ -70,7 +73,7 @@ public class MapsService {
 
   public boolean isValidMovementTile(Integer x, Integer y, List<NPCEntity> allNpcs, Integer mapId) {
     if (isTileEmpty(x, y, mapId)) {
-      if (isTileNotOccupied(x, y, allNpcs)) {
+      if (isTileNotOccupied(x, y, allNpcs, mapId)) {
         return true;
         // do encounter
       }
