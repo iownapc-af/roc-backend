@@ -14,6 +14,9 @@ CREATE TABLE npc
      type VARCHAR(255),
      x_coordinate INT,
      y_coordinate INT,
+     spawn_x INT,
+     spawn_y INT,
+     leash INT,
      map_id INT,
      CONSTRAINT map_key
       FOREIGN KEY(map_id)

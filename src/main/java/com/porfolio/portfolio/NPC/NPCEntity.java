@@ -42,6 +42,15 @@ public class NPCEntity {
   
   @Column(name = "y_coordinate")
   private Integer yCoordinate;
+
+  @Column(name = "spawn_x")
+  private Integer spawnX;
+  
+  @Column(name = "spawn_y")
+  private Integer spawnY;
+
+  private Integer leash;
+
   
   @ManyToOne
   @Fetch(value=FetchMode.SELECT)

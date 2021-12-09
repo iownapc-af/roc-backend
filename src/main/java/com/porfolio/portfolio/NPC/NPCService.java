@@ -31,6 +31,13 @@ public class NPCService {
 
   SecureRandom numberGenerator = new SecureRandom();
 
+  private boolean isWithinLeash(NPCEntity npcToMove, Integer npcXCoord, Integer npcYCoord) {
+    if ((Math.abs(npcXCoord - npcToMove.getSpawnX()) <= npcToMove.getLeash()) &&
+         (Math.abs(npcYCoord - npcToMove.getSpawnY()) <= npcToMove.getLeash()))
+      return true;
+    return false;
+  }
+
   @Scheduled(fixedRate = 500)
   private void moveNPC() {
     // this.allNpcs = npcRepository.findAllByOrderByName();
@@ -52,19 +59,23 @@ public class NPCService {
 
       switch (moveDirection) {
         case 0: // up
-          if (mapService.isValidMovementTile(npcXCoord, npcYCoord - 20, this.allNpcs, playerRepository.findById(0).get(), mapId))
+          if (mapService.isValidMovementTile(npcXCoord, npcYCoord - 20, this.allNpcs,
+              playerRepository.findById(0).get(), mapId) && isWithinLeash(npcToMove, npcXCoord, npcYCoord - 20))
             npcToMove.setYCoordinate(npcYCoord - 20);
           break;
         case 1: // down
-          if (mapService.isValidMovementTile(npcXCoord, npcYCoord + 20, this.allNpcs, playerRepository.findById(0).get(), mapId))
+          if (mapService.isValidMovementTile(npcXCoord, npcYCoord + 20, this.allNpcs,
+              playerRepository.findById(0).get(), mapId) && isWithinLeash(npcToMove, npcXCoord, npcYCoord + 20))
             npcToMove.setYCoordinate(npcYCoord + 20);
           break;
         case 2: // left
-          if (mapService.isValidMovementTile(npcXCoord - 20, npcYCoord, this.allNpcs, playerRepository.findById(0).get(), mapId))
+          if (mapService.isValidMovementTile(npcXCoord - 20, npcYCoord, this.allNpcs,
+              playerRepository.findById(0).get(), mapId) && isWithinLeash(npcToMove, npcXCoord - 20, npcYCoord))
             npcToMove.setXCoordinate(npcXCoord - 20);
           break;
         case 3: // right
-          if (mapService.isValidMovementTile(npcXCoord + 20, npcYCoord, this.allNpcs, playerRepository.findById(0).get(), mapId))
+          if (mapService.isValidMovementTile(npcXCoord + 20, npcYCoord, this.allNpcs,
+              playerRepository.findById(0).get(), mapId) && isWithinLeash(npcToMove, npcXCoord + 20, npcYCoord))
             npcToMove.setXCoordinate(npcXCoord + 20);
           break;
         case 4: // Doesn't move if 4/5 are rolled
