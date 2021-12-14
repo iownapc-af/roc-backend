@@ -51,6 +51,12 @@ public class NPCEntity {
 
   private Integer leash;
 
+  private Integer health;
+  
+  private Integer mana;
+
+  private Integer stamina;
+
   
   @ManyToOne
   @Fetch(value=FetchMode.SELECT)

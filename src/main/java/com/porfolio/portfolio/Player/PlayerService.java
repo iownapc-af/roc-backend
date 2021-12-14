@@ -99,6 +99,12 @@ public class PlayerService {
           player.setXCoordinate(playerMovement("east", player)[0]);
         player.setPlayerDirection("east");
         break;
+      case "-":
+        player.setHealth(player.getHealth() - 10);
+        break;
+      case "+":
+        player.setHealth(player.getHealth() + 10);
+        break;
       case "spacebar":
         if (mapsService.isTileDoor(playerMovement(player.getPlayerDirection(), player), player.getMap().getMapId()))
           setPlayerMapId(player);

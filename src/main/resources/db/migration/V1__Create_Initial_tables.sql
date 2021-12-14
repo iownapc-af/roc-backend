@@ -20,7 +20,10 @@ CREATE TABLE npc
      map_id INT,
      CONSTRAINT map_key
       FOREIGN KEY(map_id)
-        REFERENCES maps_entity(map_id)
+        REFERENCES maps_entity(map_id),
+    health INT,
+    mana INT,
+    stamina INT
   );
 
 CREATE TABLE player
@@ -33,6 +36,9 @@ CREATE TABLE player
      map_id INT,
      CONSTRAINT map_key
       FOREIGN KEY(map_id)
-        REFERENCES maps_entity(map_id)
+        REFERENCES maps_entity(map_id),
+    health INT,
+    mana INT,
+    stamina INT
   );
 

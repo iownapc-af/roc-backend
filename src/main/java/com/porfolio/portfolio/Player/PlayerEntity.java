@@ -47,6 +47,12 @@ public class PlayerEntity {
   @JoinColumn(name="map_id", nullable = false)
   public MapsEntity map;
 
+  private Integer health;
+  
+  private Integer mana;
+
+  private Integer stamina;
+
   // inventory
   // equipment
   // quests
